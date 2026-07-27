@@ -5,7 +5,7 @@ on:
   pull_request:
   push:
     branches:
-      - 'sixteen'
+      - 'seventeen-zf8-imei'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
