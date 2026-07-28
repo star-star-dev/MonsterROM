@@ -12,6 +12,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build_rust:
+    name: Rust
+    runs-on: ubuntu-24.04
+    steps:
+      # 1. Fetch your repository code
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      # 2. Set up the Rust toolchain
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      # 3. Cache dependencies to speed up future runs
+      - name: Enable Rust cache
+        uses: swatinem/rust-cache@v2
+
+      # 4. Enforce code formatting
+      - name: Check formatting
+        run: cargo fmt --check
+      # 5, Install samloader-rs
+      - name: samloader-rs
+        run: cargo install samloader
   build:
     name: Build
     runs-on: ubuntu-24.04
@@ -89,8 +113,7 @@ jobs:
           timeout_minutes: 60
           max_attempts: 3
           retry_on: error
-          command: ./scripts/download_fw.sh
-
+          command: samloader download --model SM-F976B --region EUX
       - name: Extract stock firmwares
         run: ./scripts/extract_fw.sh
 
