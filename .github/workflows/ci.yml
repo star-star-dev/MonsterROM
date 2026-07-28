@@ -12,11 +12,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build_rust:
-    name: Rust
+  build:
+    name: Build
     runs-on: ubuntu-24.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [o1s, p3s, r9s, t2s]
+
     steps:
-      # 1. Fetch your repository code
+      - name: Checkout repo
+        uses: actions/checkout@v7
+        with:
+          submodules: 'recursive'
+
+            # 1. Fetch your repository code
       - name: Checkout code
         uses: actions/checkout@v7
 
@@ -36,20 +47,6 @@ jobs:
       # 5, Install samloader-rs
       - name: samloader-rs
         run: cargo install samloader
-  build:
-    name: Build
-    runs-on: ubuntu-24.04
-
-    strategy:
-      fail-fast: false
-      matrix:
-        target: [o1s, p3s, r9s, t2s]
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v7
-        with:
-          submodules: 'recursive'
 
       - name: Free disk space (1/3)
         run: |
