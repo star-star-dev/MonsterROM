@@ -66,12 +66,17 @@ jobs:
         working-directory: ./out/odin/SM-G996B_XXV
         run: samloader download --model SM-G996B --region XXV
 
+      - name: Find the Zip File Location
+        run: find . -name "*.zip"
+
       - name: Extract FW Z Fold 8
-        working-directory: ./out
-        run: unzip -o "SM-F976B_1_20260625070551_hgrb10c0zn_fac.zip" -d "odin/SM-F976B_EUX" && rm -rf "SM-F976B_1_20260625070551_hgrb10c0zn_fac.zip"
+        run: |
+         unzip -o "out/odin/SM-F976B_EUX/SM-F976B_1_20260625070551_hgrb10c0zn_fac.zip" -d "out/odin/SM-F976B_EUX" 
+         rm -f "out/odin/SM-F976B_EUX/SM-F976B_1_20260625070551_hgrb10c0zn_fac.zip"
       - name: Extract FW S21+
-        working-directory: ./out
-        run: unzip -o "SM-G996B_5_20260310093132_5uqwgs1etf_fac.zip" -d "odin/SM-G996B_XXV" && rm -rf "SM-G996B_5_20260310093132_5uqwgs1etf_fac.zip"
+        run: |
+         unzip -o "out/odin/SM-G996B_XXV/SM-G996B_5_20260310093132_5uqwgs1etf_fac.zip" -d "out/odin/SM-G996B_XXV"  
+         rm -f "out/odin/SM-G996B_XXV/SM-G996B_5_20260310093132_5uqwgs1etf_fac.zip"
         
       - name: Free disk space (1/3)
         run: |
