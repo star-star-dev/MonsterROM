@@ -27,10 +27,7 @@ jobs:
         with:
           submodules: 'recursive'
 
-            # 1. Fetch your repository code
-      - name: Checkout code
-        uses: actions/checkout@v7
-
+      # 1. Fetch your repository code
       # 2. Set up the Rust toolchain
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
