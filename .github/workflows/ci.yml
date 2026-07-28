@@ -53,9 +53,20 @@ jobs:
       # 6, Install samloader-rs
       - name: samloader-rs
         run: cargo install samloader
-        
+
+      # 7, Check current directory  
+      - name: Check dir
+        run: ls
+
+      # 8, cd to working-directory
+      - name: out/odin/fw
+        run: cd ./out/odin
+      
       - name: Download stock firmwares
         run: samloader download --model SM-F976B --region EUX
+
+      - name: Download stock firmwares
+        run: samloader download --model SM-G996B --region XXV
         
       - name: Free disk space (1/3)
         run: |
