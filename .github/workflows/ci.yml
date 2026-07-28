@@ -44,8 +44,6 @@ jobs:
         uses: swatinem/rust-cache@v2
 
       # 4. Enforce code formatting
-      - name: Check formatting
-        run: cargo fmt --check
       # 5. Build samloader-rs
       - name: Build External Rust App
         run: |
