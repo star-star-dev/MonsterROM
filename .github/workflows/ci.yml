@@ -54,7 +54,7 @@ jobs:
       - name: samloader-rs
         run: cargo install samloader
 
-      # 7, Check current directory  
+      # 7, Check current directory  (#DEBUG)
       - name: Check dir
         run: ls
       
@@ -65,7 +65,8 @@ jobs:
       - name: Download stock firmwares
         working-directory: ./out/odin/SM-G996B_XXV
         run: samloader download --model SM-G996B --region XXV
-
+        
+      # 8, #DEBUG
       - name: Find the Zip File Location
         run: find . -name "*.zip"
 
