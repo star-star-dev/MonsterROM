@@ -59,11 +59,11 @@ jobs:
         run: ls
       
       - name: Download stock firmwares
-        working-directory: ./out/odin/SM-F976B
+        working-directory: ./out/odin/SM-F976B_EUX
         run: samloader download --model SM-F976B --region EUX
 
       - name: Download stock firmwares
-        working-directory: ./out/odin/SM-G996B
+        working-directory: ./out/odin/SM-G996B_XXV
         run: samloader download --model SM-G996B --region XXV
         
       - name: Free disk space (1/3)
