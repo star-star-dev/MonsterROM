@@ -28,6 +28,11 @@ jobs:
           submodules: 'recursive'
 
       # 1. Fetch your repository code
+      - name: Checkout External Repository
+        uses: actions/checkout@v4
+        with:
+          repository: 'topjohnwu/samloader-rs' # Replace with target repo details
+          path: 'external/samloader-rs' # Clones the repo into this subfolder
       # 2. Set up the Rust toolchain
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -41,7 +46,13 @@ jobs:
       # 4. Enforce code formatting
       - name: Check formatting
         run: cargo fmt --check
-      # 5, Install samloader-rs
+      # 5. Build samloader-rs
+      - name: Build External Rust App
+        run: |
+          cargo build --release
+        working-directory: ./external/samloader-rs
+        
+      # 6, Install samloader-rs
       - name: samloader-rs
         run: cargo install samloader
 
