@@ -63,7 +63,7 @@ jobs:
         run: samloader download --model SM-F976B --region EUX
 
       - name: Download stock firmwares
-        working-directory: ./out/odin/SM-G996B_XXV
+        working-directory: ./out/odin/SM-G996B_AUT
         run: samloader download --model SM-G996B --region AUT
         
       # 8, #DEBUG
