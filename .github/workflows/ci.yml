@@ -29,7 +29,7 @@ jobs:
 
       # 1. Fetch your repository code
       - name: Checkout External Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: 'topjohnwu/samloader-rs' # Replace with target repo details
           path: 'external/samloader-rs' # Clones the repo into this subfolder
@@ -45,7 +45,7 @@ jobs:
 
       # 4. Enforce code formatting
       # 5. Build samloader-rs
-      - name: Build External Rust App
+      - name: Build samloader
         run: |
           cargo build --release
         working-directory: ./external/samloader-rs
@@ -54,9 +54,9 @@ jobs:
       - name: samloader-rs
         run: cargo install samloader
 
-      # 7, Check current directory  (#DEBUG)
-      - name: Check dir
-        run: ls
+#      # 7, Check current directory  (#DEBUG)
+#      - name: Check dir
+#        run: ls
       
       - name: Download stock firmwares
         working-directory: ./out/odin/SM-F976B_EUX
@@ -66,9 +66,9 @@ jobs:
         working-directory: ./out/odin/SM-G996B_AUT
         run: samloader download --model SM-G996B --region AUT
         
-      # 8, #DEBUG
-      - name: Find the Zip File Location
-        run: find . -name "*.zip"
+#      # 8, #DEBUG
+#      - name: Find the Zip File Location
+#        run: find . -name "*.zip"
 
       - name: Extract FW Z Fold 8
         run: |
