@@ -57,15 +57,13 @@ jobs:
       # 7, Check current directory  
       - name: Check dir
         run: ls
-
-      # 8, cd to working-directory
-      - name: out/odin/fw
-        run: cd ./out/odin
       
       - name: Download stock firmwares
+        working-directory: ./out/odin/SM-F976B
         run: samloader download --model SM-F976B --region EUX
 
       - name: Download stock firmwares
+        working-directory: ./out/odin/SM-G996B
         run: samloader download --model SM-G996B --region XXV
         
       - name: Free disk space (1/3)
