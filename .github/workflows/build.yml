@@ -5,7 +5,7 @@ on:
   pull_request:
   push:
     branches:
-      - '16Q2'
+      - 'testgamevn58-patch-1'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
