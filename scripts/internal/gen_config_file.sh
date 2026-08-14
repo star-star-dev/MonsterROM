@@ -135,6 +135,9 @@ fi
 #   TARGET_BOOT_PARTITION_SIZE
 #     Integer containing the size in bytes of the target device boot partition size.
 #
+#   TARGET_DT_PARTITION_SIZE
+#     Integer containing the size in bytes of the target device dt (DTB) partition size.
+#
 #   TARGET_DTBO_PARTITION_SIZE
 #     Integer containing the size in bytes of the target device dtbo partition size.
 #
@@ -474,6 +477,7 @@ fi
     GET_BUILD_VAR "TARGET_INCLUDE_PATCHED_VBMETA" "false"
     GET_BUILD_VAR "TARGET_KEEP_ORIGINAL_SIGN" "false"
     GET_BUILD_VAR "TARGET_BOOT_PARTITION_SIZE" "none"
+    GET_BUILD_VAR "TARGET_DT_PARTITION_SIZE" "none"
     GET_BUILD_VAR "TARGET_DTBO_PARTITION_SIZE" "none"
     GET_BUILD_VAR "TARGET_INIT_BOOT_PARTITION_SIZE" "none"
     GET_BUILD_VAR "TARGET_VENDOR_BOOT_PARTITION_SIZE" "none"
@@ -485,13 +489,9 @@ fi
         GET_BUILD_VAR "TARGET_SUPER_GROUP_NAME" "$SOURCE_SUPER_GROUP_NAME"
         GET_BUILD_VAR "TARGET_$(tr "[:lower:]" "[:upper:]" <<< "${TARGET_SUPER_GROUP_NAME:-$SOURCE_SUPER_GROUP_NAME}")_SIZE"
     else
-        GET_BUILD_VAR "TARGET_SYSTEM_PARTITION_SIZE" "none"
-        GET_BUILD_VAR "TARGET_VENDOR_PARTITION_SIZE" "none"
-        GET_BUILD_VAR "TARGET_PRODUCT_PARTITION_SIZE" "none"
-        GET_BUILD_VAR "TARGET_ODM_PARTITION_SIZE" "none"
-        GET_BUILD_VAR "TARGET_VENDOR_DLKM_PARTITION_SIZE" "none"
-        GET_BUILD_VAR "TARGET_ODM_DLKM_PARTITION_SIZE" "none"
-        GET_BUILD_VAR "TARGET_SYSTEM_DLKM_PARTITION_SIZE" "none"
+        # Legacy Samsung layouts are defined by the required repartition ZIP.
+        # Static OS images are built without per-partition size arguments.
+        :
     fi
     GET_BUILD_VAR "TARGET_OS_SINGLE_SYSTEM_IMAGE"
     GET_BUILD_VAR "TARGET_OS_FILE_SYSTEM_TYPE" "erofs"
