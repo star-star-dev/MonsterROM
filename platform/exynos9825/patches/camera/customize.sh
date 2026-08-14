@@ -1,4 +1,20 @@
 LOG_STEP_IN "- Replacing camera blobs"
+# Some legacy donor-side camera enhancement blobs are optional on newer bases.
+# Do not abort the entire ROM build when a selected donor prebuilt is absent.
+ADD_OPTIONAL_PREBUILT()
+{
+    local DEVICE="$1"
+    local BLOB="$3"
+    local PREBUILT_PATH="$SRC_DIR/prebuilts/samsung/${DEVICE}/${BLOB}"
+
+    if [ ! -e "$PREBUILT_PATH" ]; then
+        LOGW "Optional prebuilt not found, skipping: ${PREBUILT_PATH//$SRC_DIR\//}"
+        return 0
+    fi
+
+    ADD_TO_WORK_DIR "$@"
+}
+
 BLOBS_LIST="
 system/lib64/libenn_wrapper_system.so
 system/lib64/libpic_best.arcsoft.so
@@ -56,13 +72,13 @@ system/lib64/libsnap_aidl.snap.samsung.so
 "
 for blob in $BLOBS_LIST
 do
-    ADD_TO_WORK_DIR "r9sxxx" "system" "$blob" 0 0 644 "u:object_r:system_lib_file:s0"
+    ADD_OPTIONAL_PREBUILT "r9sxxx" "system" "$blob" 0 0 644 "u:object_r:system_lib_file:s0"
 done
 LOG_STEP_OUT
 
 LOG_STEP_IN "- Adding S21 FE (r9sxxx) SWISP models"
 DELETE_FROM_WORK_DIR "vendor" "saiv/swisp_1.0"
-ADD_TO_WORK_DIR "r9sxxx" "vendor" "saiv/swisp_1.0"
+ADD_OPTIONAL_PREBUILT "r9sxxx" "vendor" "saiv/swisp_1.0"
 
 BLOBS_LIST="
 system/lib64/libSwIsp_core.camera.samsung.so
@@ -70,15 +86,15 @@ system/lib64/libSwIsp_wrapper_v1.camera.samsung.so
 "
 for blob in $BLOBS_LIST
 do
-    ADD_TO_WORK_DIR "r9sxxx" "system" "$blob" 0 0 644 "u:object_r:system_lib_file:s0" &
+    ADD_OPTIONAL_PREBUILT "r9sxxx" "system" "$blob" 0 0 644 "u:object_r:system_lib_file:s0" &
 done
 LOG_STEP_OUT
 
 LOG_STEP_IN "- Adding A26 (a26xxx) Polarr SDK blobs"
-ADD_TO_WORK_DIR "a26xxx" "system" "system/etc/public.libraries-polarr.txt" 0 0 644 "u:object_r:system_file:s0"
-ADD_TO_WORK_DIR "a26xxx" "system" "system/lib64/libBestComposition.polarr.so" 0 0 644 "u:object_r:system_lib_file:s0"
-ADD_TO_WORK_DIR "a26xxx" "system" "system/lib64/libFeature.polarr.so" 0 0 644 "u:object_r:system_lib_file:s0"
-ADD_TO_WORK_DIR "a26xxx" "system" "system/lib64/libTracking.polarr.so" 0 0 644 "u:object_r:system_lib_file:s0"
+ADD_OPTIONAL_PREBUILT "a26xxx" "system" "system/etc/public.libraries-polarr.txt" 0 0 644 "u:object_r:system_file:s0"
+ADD_OPTIONAL_PREBUILT "a26xxx" "system" "system/lib64/libBestComposition.polarr.so" 0 0 644 "u:object_r:system_lib_file:s0"
+ADD_OPTIONAL_PREBUILT "a26xxx" "system" "system/lib64/libFeature.polarr.so" 0 0 644 "u:object_r:system_lib_file:s0"
+ADD_OPTIONAL_PREBUILT "a26xxx" "system" "system/lib64/libTracking.polarr.so" 0 0 644 "u:object_r:system_lib_file:s0"
 LOG_STEP_OUT
 
 LOG_STEP_IN "- Cleaning SamsungCamera OAT"
@@ -101,7 +117,7 @@ LOG_STEP_OUT
 
 LOG_STEP_IN "- Adding S21 FE (r9sxxx) SingleTake models"
 DELETE_FROM_WORK_DIR "vendor" "etc/singletake"
-ADD_TO_WORK_DIR "r9sxxx" "vendor" "etc/singletake"
+ADD_OPTIONAL_PREBUILT "r9sxxx" "vendor" "etc/singletake"
 
 BLOBS_LIST="
 system/priv-app/SingleTakeService/SingleTakeService.apk
@@ -109,7 +125,7 @@ system/cameradata/singletake/service-feature.xml
 "
 for blob in $BLOBS_LIST
 do
-    ADD_TO_WORK_DIR "r9sxxx" "system" "$blob" 0 0 644 "u:object_r:system_file:s0" &
+    ADD_OPTIONAL_PREBUILT "r9sxxx" "system" "$blob" 0 0 644 "u:object_r:system_file:s0" &
 done
 
 # shellcheck disable=SC2046
