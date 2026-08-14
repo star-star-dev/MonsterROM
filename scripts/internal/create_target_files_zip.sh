@@ -125,10 +125,17 @@ while IFS= read -r f; do
             -o "$TMP_DIR/$PARTITION.img" -m -S \
             "$WORK_DIR/$PARTITION" "$WORK_DIR/configs/file_context-$PARTITION" "$WORK_DIR/configs/fs_config-$PARTITION" || exit 1
     else
-        _GET_PARTITION_SIZE "$PARTITION" > /dev/null || exit 1
+        # Legacy Samsung devices use individually flashable static partitions.
+        # Keep the EternityROM behavior: system, prism and optics are ext4
+        # images that are expanded by the target post-install script; remaining
+        # OS images use the configured target filesystem.
+        FILESYSTEM_TYPE="$TARGET_OS_FILE_SYSTEM_TYPE"
+        if [[ "$PARTITION" == "system" || "$PARTITION" == "prism" || "$PARTITION" == "optics" ]]; then
+            FILESYSTEM_TYPE="ext4"
+        fi
 
-        "$SRC_DIR/scripts/build_fs_image.sh" "$TARGET_OS_FILE_SYSTEM_TYPE" \
-            -o "$TMP_DIR/$PARTITION.img" -m -S -s "$(_GET_PARTITION_SIZE "$PARTITION")" \
+        "$SRC_DIR/scripts/build_fs_image.sh" "$FILESYSTEM_TYPE" \
+            -o "$TMP_DIR/$PARTITION.img" -S \
             "$WORK_DIR/$PARTITION" "$WORK_DIR/configs/file_context-$PARTITION" "$WORK_DIR/configs/fs_config-$PARTITION" || exit 1
     fi
 done < <(find "$WORK_DIR" -maxdepth 1 -type d)

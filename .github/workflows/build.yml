@@ -18,7 +18,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [o1s, p3s, r9s, t2s]
+        # Isolated validation branch: build only Galaxy Note10+ 5G Korea (d2xks).
+        target: [d2xks]
 
     steps:
       - name: Checkout repo

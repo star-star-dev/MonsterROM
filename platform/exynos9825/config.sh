@@ -1,0 +1,53 @@
+# Copyright (c) 2026
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# Platform configuration file for Samsung Exynos 9825 devices (exynos9825).
+# Note10-series target values are re-sourced after this file by the config
+# generator, so per-device display, RIL and storage values live under target/.
+
+# Android 12 target firmware baseline.
+TARGET_BOARD_API_LEVEL=31
+TARGET_PRODUCT_SHIPPING_API_LEVEL=28
+TARGET_VNDK_API_LEVEL=31
+
+# Note10-series devices use legacy, non-dynamic partitions.
+TARGET_USE_DYNAMIC_PARTITIONS=false
+
+# Shared capacities still consumed by the build chain. Boot and DTB/DT/DTBO
+# are used for kernel image handling; cache is used by incremental OTA logic.
+# The Repartition v3 layout for OS-side system/vendor/product/odm/prism/optics
+# is documented in REPARTITION_README.md rather than duplicated as unused
+# configuration fields, matching Maniac-ROM's successful static build pattern.
+TARGET_BOOT_PARTITION_SIZE=57671680
+# Samsung flashes dt.img to the PIT partition named DTB.
+TARGET_DT_PARTITION_SIZE=8388608
+TARGET_DTBO_PARTITION_SIZE=8388608
+TARGET_CACHE_PARTITION_SIZE=629145600
+
+# Shared OS layout.
+TARGET_OS_SINGLE_SYSTEM_IMAGE="essi"
+TARGET_OS_FILE_SYSTEM_TYPE="erofs"
+TARGET_OS_BUILD_SYSTEM_EXT_PARTITION=false
+
+# Shared Wi-Fi and hotspot capabilities from the supplied Exynos 9825 package.
+TARGET_WLAN_CONFIG_CONNECTION_PERSONALIZATION="0"
+TARGET_WLAN_CONFIG_CPU_CSTATE_DISABLE_THRESHOLD="100"
+TARGET_WLAN_CONFIG_DATA_ACTIVITY_AFFINITY_BOOSTER_THRESHOLD="150"
+TARGET_WLAN_CONFIG_DYNAMIC_SWITCH="0"
+TARGET_WLAN_CONFIG_L1SS_DISABLE_THRESHOLD="100"
+TARGET_WLAN_SUPPORT_80211AX=true
+TARGET_WLAN_SUPPORT_80211AX_6GHZ=false
+TARGET_WLAN_SUPPORT_APE_SERVICE=false
+TARGET_WLAN_SUPPORT_LOWLATENCY=false
+TARGET_WLAN_SUPPORT_MBO=true
+TARGET_WLAN_SUPPORT_MOBILEAP_5G_BASEDON_COUNTRY=false
+TARGET_WLAN_SUPPORT_MOBILEAP_6G=false
+TARGET_WLAN_SUPPORT_MOBILEAP_DUALAP=false
+TARGET_WLAN_SUPPORT_MOBILEAP_OWE=false
+TARGET_WLAN_SUPPORT_MOBILEAP_POWER_SAVEMODE=false
+TARGET_WLAN_SUPPORT_MOBILEAP_PRIORITIZE_TRAFFIC=false
+TARGET_WLAN_SUPPORT_MOBILEAP_WIFI_CONCURRENCY=true
+TARGET_WLAN_SUPPORT_MOBILEAP_WIFISHARING_LITE=true
+TARGET_WLAN_SUPPORT_SWITCH_FOR_INDIVIDUAL_APPS=true
+TARGET_WLAN_SUPPORT_TWT_CONTROL=false
+TARGET_WLAN_SUPPORT_WIFI_TO_CELLULAR=false
