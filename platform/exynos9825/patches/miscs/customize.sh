@@ -77,7 +77,12 @@ SET_PROP "product" "bluetooth.profile.sap.server.enabled" "true"
 SET_PROP "product" "bluetooth.profile.ccp.server.enabled" "false"
 SET_PROP "product" "bluetooth.profile.vcp.controller.enabled" "false"
 
-ADD_TO_WORK_DIR "b0sxxx" "system" "system/apex/com.android.bt.apex" 0 0 644 "u:object_r:system_file:s0"
+BT_APEX_PREBUILT="$SRC_DIR/prebuilts/samsung/b0sxxx/system/apex/com.android.bt.apex"
+if [ -f "$BT_APEX_PREBUILT" ]; then
+    ADD_TO_WORK_DIR "b0sxxx" "system" "system/apex/com.android.bt.apex" 0 0 644 "u:object_r:system_file:s0"
+else
+    LOGW "Optional Bluetooth APEX prebuilt not found, retaining donor APEX: ${BT_APEX_PREBUILT//$SRC_DIR\//}"
+fi
 LOG_STEP_OUT
 
 # # BT-lib-patch
