@@ -10,7 +10,9 @@ TARGET_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$TARGET_FIRMWARE")_$(cut -d "/" 
 
 COPY_SOURCE_FIRMWARE()
 {
-    local SOURCE_FOLDERS="odm product system"
+    # Note10 static builds follow the legacy Samsung layout also used by
+    # EternityROM: source ODM, Prism and Optics are independent images.
+    local SOURCE_FOLDERS="odm product system prism optics"
     for f in $SOURCE_FOLDERS; do
         if [ -d "$FW_DIR/$SOURCE_FIRMWARE_PATH/$f" ]; then
             LOG "- Copying /$f from source firmware"
