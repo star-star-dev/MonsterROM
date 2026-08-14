@@ -20,8 +20,12 @@ ADD_OPTIONAL_PREBUILT "r9sxxx" "vendor" "etc/VslMesDetector"
 LOG_STEP_OUT
 
 LOG "- Fixing MIDAS model detection"
-sed -i "s/$SOURCE_CODENAME/dummy/g" "$WORK_DIR/vendor/etc/midas/midas_config.json"
-sed -i "s/r9s/$SOURCE_CODENAME/g" "$WORK_DIR/vendor/etc/midas/midas_config.json"
+MIDAS_CONFIG="$WORK_DIR/vendor/etc/midas/midas_config.json"
+if [ -f "$MIDAS_CONFIG" ] && [ -n "$TARGET_CODENAME" ]; then
+    sed -i "s/r9s/${TARGET_CODENAME}/g" "$MIDAS_CONFIG"
+else
+    LOGW "MIDAS model configuration or TARGET_CODENAME is unavailable, skipping model replacement"
+fi
 
 LOG_STEP_IN "- Adding S21 FE (r9sxxx) Photo Remaster Service"
 ADD_OPTIONAL_PREBUILT "r9sxxx" "system" "system/priv-app/PhotoRemasterService/PhotoRemasterService.apk"
