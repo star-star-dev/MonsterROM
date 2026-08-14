@@ -1,3 +1,19 @@
+# Legacy S21 light HAL blobs are absent from some MonsterROM prebuilt sets.
+# Treat them as optional so a missing p3sxxx prebuilt cannot abort target builds.
+ADD_OPTIONAL_PREBUILT()
+{
+    local DEVICE="$1"
+    local BLOB="$3"
+    local PREBUILT_PATH="$SRC_DIR/prebuilts/samsung/${DEVICE}/${BLOB}"
+
+    if [ ! -e "$PREBUILT_PATH" ]; then
+        LOGW "Optional prebuilt not found, skipping: ${PREBUILT_PATH//$SRC_DIR\//}"
+        return 0
+    fi
+
+    ADD_TO_WORK_DIR "$@"
+}
+
 LOG_STEP_IN "- Updating Vendor HALs"
 BLOBS_LIST="
 bin/hw/android.hardware.health@2.1-service-samsung
@@ -63,7 +79,7 @@ LOG "- Fixing JSQZ node permission"
 echo "/dev/jsqz                 0660   mediacodec     camera" >> $WORK_DIR/vendor/ueventd.rc
 
 LOG_STEP_IN "- Adding S21 (p3sxxx) Light HAL"
-ADD_TO_WORK_DIR "p3sxxx" "vendor" "bin/hw/vendor.samsung.hardware.light-service"
-ADD_TO_WORK_DIR "p3sxxx" "vendor" "lib64/android.hardware.light-V1-ndk_platform.so"
-ADD_TO_WORK_DIR "p3sxxx" "vendor" "lib64/vendor.samsung.hardware.light-V1-ndk_platform.so"
+ADD_OPTIONAL_PREBUILT "p3sxxx" "vendor" "bin/hw/vendor.samsung.hardware.light-service"
+ADD_OPTIONAL_PREBUILT "p3sxxx" "vendor" "lib64/android.hardware.light-V1-ndk_platform.so"
+ADD_OPTIONAL_PREBUILT "p3sxxx" "vendor" "lib64/vendor.samsung.hardware.light-V1-ndk_platform.so"
 LOG_STEP_OUT
