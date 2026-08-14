@@ -5,7 +5,7 @@ on:
   pull_request:
   push:
     branches:
-      - 'testgamevn58-patch-1'
+      - 'sixteenQPR2'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -18,7 +18,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [o1s, p3s, r9s, t2s]
+        # Isolated validation branch: build only Galaxy Note10+ 5G Korea (d2xks).
+        target: [d2xks]
 
     steps:
       - name: Checkout repo
@@ -80,11 +81,4 @@ jobs:
       - name: Build ROM
         run: |
           source ./buildenv.sh ${{ matrix.target }}
-          ./scripts/make_rom.sh -z
-
-      - name: Upload ROM Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: MonsterROM-${{ matrix.target }}
-          path: |
-            out/*.zip*
+          ./scripts/make_rom.sh
