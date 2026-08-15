@@ -3,7 +3,11 @@ name: Update prebuilt blobs
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 12 * * *"
+    - cron: "0 12 1 * *"
+
+permissions:
+  contents: write
+  pull-requests: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -23,6 +27,12 @@ jobs:
           - module: "Galaxy S21 FE 5G (Exynos) (r9sxxx)"
             device: "r9sxxx"
             firmware: "SM-G990E/THL/355798871234563"
+          - module: "Galaxy S21 Ultra (p3sxxx)"
+            device: "p3sxxx"
+            firmware: "SM-G998B/AUT/352731458300849"
+          - module: "Galaxy A26 (a26xxx)"
+            device: "a26xxx"
+            firmware: "SM-A266B/EUX/350439761193107"
 
     steps:
       - name: Checkout repo

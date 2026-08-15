@@ -36,7 +36,19 @@ UPDATE_BLOBS()
         BLOBS+="$(find "$PREBUILTS_DIR/system_ext" ! -type d)"
         BLOBS="${BLOBS//$PREBUILTS_DIR\//}"
     fi
-    BLOBS="$(LC_ALL=C sort <<< "$BLOBS")"
+    # A .manifest allows a newly added prebuilt directory to declare required
+    # firmware paths before the first binary update has populated the tree.
+    # Empty lines and comments keep the manifest human-maintainable.
+    if [ -f "$PREBUILTS_DIR/.manifest" ]; then
+        while IFS= read -r i; do
+            [ "$i" ] || continue
+            [[ "$i" == "#"* ]] && continue
+            [ "$BLOBS" ] && BLOBS+=$'\n'
+            BLOBS+="$i"
+        done < "$PREBUILTS_DIR/.manifest"
+    fi
+
+    BLOBS="$(LC_ALL=C sort -u <<< "$BLOBS")"
 
     for i in $BLOBS; do
         if [[ "$i" == *.[0-9][0-9] ]]; then
@@ -51,6 +63,7 @@ UPDATE_BLOBS()
         fi
 
         LOG "- Updating prebuilts/samsung/$DEVICE/$i"
+        EVAL "mkdir -p \"$(dirname "$FILE_PATH")\"" || exit 1
 
         if [ ! -L "$FW_DIR/${MODEL}_${CSC}/$i" ] && \
                 [ "$(wc -c "$FW_DIR/${MODEL}_${CSC}/$i" | cut -d " " -f 1)" -gt "52428800" ]; then

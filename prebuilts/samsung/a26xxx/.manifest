@@ -1,0 +1,5 @@
+# Required by platform/exynos9825/patches/camera/customize.sh.
+system/etc/public.libraries-polarr.txt
+system/lib64/libBestComposition.polarr.so
+system/lib64/libFeature.polarr.so
+system/lib64/libTracking.polarr.so

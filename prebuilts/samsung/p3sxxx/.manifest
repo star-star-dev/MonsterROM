@@ -1,0 +1,4 @@
+# Required by platform/exynos9825/patches/vendor/customize.sh.
+vendor/bin/hw/vendor.samsung.hardware.light-service
+vendor/lib64/android.hardware.light-V1-ndk_platform.so
+vendor/lib64/vendor.samsung.hardware.light-V1-ndk_platform.so
