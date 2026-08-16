@@ -1,0 +1,1 @@
+Disabled for the One UI 8.5 donor: both legacy One UI 7 smali targets are absent from current SystemUI and SecSettings APK layouts. Re-enable only after rebasing the patches against the extracted One UI 8.5 smali sources.

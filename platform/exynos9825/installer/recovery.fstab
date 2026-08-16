@@ -1,0 +1,13 @@
+# Static partition map for Samsung Exynos 9825 Note10-series devices.
+# This file is consumed by scripts/utils/install_utils.sh when
+# TARGET_USE_DYNAMIC_PARTITIONS=false.
+
+/dev/block/by-name/system  /system  emmc  defaults  defaults
+/dev/block/by-name/vendor  /vendor  emmc  defaults  defaults
+/dev/block/by-name/product /product emmc  defaults  defaults
+/dev/block/by-name/odm     /odm     emmc  defaults  defaults
+/dev/block/by-name/prism   /prism   emmc  defaults  defaults
+/dev/block/by-name/optics  /optics  emmc  defaults  defaults
+/dev/block/by-name/dtb     /dtb     emmc  defaults  defaults
+/dev/block/by-name/dtbo    /dtbo    emmc  defaults  defaults
+/dev/block/by-name/boot    /boot    emmc  defaults  defaults
