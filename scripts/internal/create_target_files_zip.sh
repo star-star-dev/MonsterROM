@@ -138,11 +138,11 @@ while IFS= read -r f; do
             # The legacy d2xks system tree is ~8 GiB; avoid the sparse conversion
             # peak that can terminate mkuserimg/e2fsdroid on hosted runners.
             "$SRC_DIR/scripts/build_fs_image.sh" "$FILESYSTEM_TYPE" \
-                -o "$TMP_DIR/$PARTITION.img" \
+                -o "$TMP_DIR/$PARTITION.img" -m \
                 "$WORK_DIR/$PARTITION" "$WORK_DIR/configs/file_context-$PARTITION" "$WORK_DIR/configs/fs_config-$PARTITION" || exit 1
         else
             "$SRC_DIR/scripts/build_fs_image.sh" "$FILESYSTEM_TYPE" \
-                -o "$TMP_DIR/$PARTITION.img" -S \
+                -o "$TMP_DIR/$PARTITION.img" -m -S \
                 "$WORK_DIR/$PARTITION" "$WORK_DIR/configs/file_context-$PARTITION" "$WORK_DIR/configs/fs_config-$PARTITION" || exit 1
         fi
     fi
