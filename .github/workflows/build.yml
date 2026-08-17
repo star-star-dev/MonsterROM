@@ -129,8 +129,6 @@ jobs:
       # six GitHub Release assets, each below GitHub's per-asset limit.
       - name: Split ROM and upload GitHub Release
         if: github.event_name == 'workflow_dispatch'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           shopt -s nullglob
@@ -146,48 +144,16 @@ jobs:
             split -d -n 6 --additional-suffix="" "$file" "release_parts/${name}.part_"
             cp "${file}.sha256" "release_parts/"
           done
-          tag="d2xks-oneui8.5-final"
-          title="MonsterROM d2xks OneUI8.5 final"
-          api="https://api.github.com/repos/${GITHUB_REPOSITORY}"
-          auth=(-H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28")
-          release_json="release.json"
-          release_code=$(curl -sS -L "${auth[@]}" -o "$release_json" -w "%{http_code}" "$api/releases/tags/$tag")
-          if [ "$release_code" = "200" ]; then
-            release_id=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["id"])' "$release_json")
-          elif [ "$release_code" = "404" ]; then
-            python3 - "$tag" "$title" "$GITHUB_SHA" > release_payload.json <<'PY'
-          import json, sys
-          print(json.dumps({
-              "tag_name": sys.argv[1],
-              "target_commitish": sys.argv[3],
-              "name": sys.argv[2],
-              "body": "Samsung Galaxy Note10+ 5G KOR (d2xks / SM-N976N), OneUI8.5 donor. Reassemble the six .part_ files in lexical order with cat, then verify the accompanying SHA-256 file before flashing.",
-              "draft": False,
-              "prerelease": False,
-          }))
-          PY
-            curl -sS -f -L -X POST "${auth[@]}" -H "Content-Type: application/json" --data-binary @release_payload.json "$api/releases" > "$release_json"
-            release_id=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["id"])' "$release_json")
-          else
-            cat "$release_json"
-            exit 1
-          fi
-          upload_url="https://uploads.github.com/repos/${GITHUB_REPOSITORY}/releases/${release_id}/assets"
-          for asset in release_parts/*; do
-            asset_name=$(basename "$asset")
-            encoded_name=$(python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))' "$asset_name")
-            curl -sS -f -L --retry 3 -X POST "${auth[@]}" \
-              -H "Content-Type: application/octet-stream" \
-              --data-binary "@$asset" \
-              "$upload_url?name=$encoded_name" > /dev/null
-          done
-          curl -sS -f -L "${auth[@]}" "$api/releases/$release_id" > release_verify.json
-          python3 - <<'PY'
-          import json
-          release = json.load(open("release_verify.json"))
-          parts = sorted(a["name"] for a in release.get("assets", []) if ".part_" in a["name"])
-          if len(parts) != 6:
-              raise SystemExit(f"expected 6 ROM parts, found {len(parts)}: {parts}")
-          print(f"Release verified: {release['name']} with six ROM parts")
-          PY
-          rm -f "$release_json" release_payload.json release_verify.json
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: d2xks-oneui8.5-final
+          name: MonsterROM d2xks OneUI8.5 final
+          target_commitish: ${{ github.sha }}
+          files: release_parts/*
+          body: |
+            Samsung Galaxy Note10+ 5G KOR (d2xks / SM-N976N), OneUI8.5 donor.
+
+            The flashable ROM is split into exactly six `.part_` files. Reassemble them in lexical order with `cat`, then verify the accompanying SHA-256 file before flashing.
+
+            Build run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
