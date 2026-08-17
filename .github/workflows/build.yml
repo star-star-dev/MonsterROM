@@ -132,9 +132,10 @@ jobs:
         run: |
           set -euo pipefail
           shopt -s nullglob
-          files=(out/*.zip)
-          if [ "${#files[@]}" -eq 0 ]; then
-            echo "No flashable ROM ZIP found in out/"
+          files=(out/*-sign.zip)
+          if [ "${#files[@]}" -ne 1 ]; then
+            echo "Expected exactly one flashable *-sign.zip in out/, found ${#files[@]}"
+            printf '%s\n' "${files[@]}"
             exit 1
           fi
           mkdir -p release_parts
