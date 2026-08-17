@@ -149,7 +149,7 @@ jobs:
           tag="d2xks-oneui8.5-final"
           title="MonsterROM d2xks OneUI8.5 final"
           api="https://api.github.com/repos/${GITHUB_REPOSITORY}"
-          auth=(-H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28")
+          auth=(-H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28")
           release_json="release.json"
           release_code=$(curl -sS -L "${auth[@]}" -o "$release_json" -w "%{http_code}" "$api/releases/tags/$tag")
           if [ "$release_code" = "200" ]; then
